@@ -50,9 +50,9 @@ spec:
             - name: REGISTRY_GROUPID
               value: globex
             - name: REGISTRY_ARTIFACTID
-              value: ProductCatalogJsonSchemaAPI
+              value: OrderPlacementJsonSchemaAPI
             - name: REGISTRY_ARTIFACTID_VERSION
-              value: "1"
+              value: "2"
           livenessProbe:
             httpGet:
               path: /q/health/live

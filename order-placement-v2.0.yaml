@@ -50,7 +50,7 @@ spec:
             - name: REGISTRY_GROUPID
               value: globex
             - name: REGISTRY_ARTIFACTID
-              value: ProductCatalogJsonSchemaAPI
+              value: OrderPlacementJsonSchemaAPI-2.0
             - name: REGISTRY_ARTIFACTID_VERSION
               value: "1"
           livenessProbe:
