@@ -63,7 +63,7 @@ spec:
             - name: API_CATALOG_RECOMMENDED_PRODUCT_IDS
               value: 'http://recommendation-engine:8080/score/product'
             - name: API_TRACK_PLACEORDER
-              value: 'http://order-placemen-2-0t:8080/placeorder'
+              value: 'http://order-placemen-2-0:8080/placeorder'
           imagePullPolicy: IfNotPresent
       restartPolicy: Always
       serviceAccountName: globex-app-user1-globex-ui-2-0
