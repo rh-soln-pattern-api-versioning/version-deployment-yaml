@@ -1,0 +1,119 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: globex-app-user1-globex-ui-2-0
+  labels:
+    app.kubernetes.io/instance: globex-app-user1
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: globex-ui-2-0
+    app.kubernetes.io/part-of: globex-app-user1
+    app.kubernetes.io/version: 1.0.0
+
+---
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  annotations:
+    app.openshift.io/connects-to: >
+      [{"apiVersion":"apps/v1","kind":"Deployment","name":"catalog"},
+      {"apiVersion":"apps/v1","kind":"Deployment","name":"recommendation-engine"},
+      {"apiVersion":"apps/v1","kind":"Deployment","name":"activity-tracking"},
+      {"apiVersion":"apps/v1","kind":"Deployment","name":"order-placement-2-0"}]
+  name: globex-ui-2-0
+  namespace: globex-user1
+  labels:
+    app.kubernetes.io/instance: globex-app-user1
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: globex-ui-2-0
+    app.kubernetes.io/part-of: globex-app-user1
+    app.kubernetes.io/version: 1.0.0
+    app.openshift.io/runtime: nodejs
+    helm.sh/chart: globex-ui-0.1.0
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: globex-ui-v2-0
+      app.kubernetes.io/part-of: globex-app-user1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: globex-ui-v2-0
+        app.kubernetes.io/part-of: globex-app-user1
+    spec:
+      containers:
+        - name: globex-ui
+          image: 'quay.io/rh_soln_pattern_api_versioning/globex-ui:v2.0'
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          env:
+            - name: NODE_ENV
+              value: prod
+            - name: PORT
+              value: '8080'
+            - name: API_TRACK_USERACTIVITY
+              value: 'http://activity-tracking:8080/track'
+            - name: API_GET_PAGINATED_PRODUCTS
+              value: 'http://catalog:8080/services/products'
+            - name: API_GET_PRODUCT_DETAILS_BY_IDS
+              value: 'http://catalog:8080/services/product/list/'
+            - name: API_CATALOG_RECOMMENDED_PRODUCT_IDS
+              value: 'http://recommendation-engine:8080/score/product'
+            - name: API_TRACK_PLACEORDER
+              value: 'http://order-placemen-2-0t:8080/placeorder'
+          imagePullPolicy: IfNotPresent
+      restartPolicy: Always
+      serviceAccountName: globex-app-user1-globex-ui-2-0
+      serviceAccount: globex-app-user1-globex-ui-2.0
+      securityContext: {}
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: globex-ui-v2-0
+  labels:
+    app.kubernetes.io/instance: globex-app-user1
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: globex-ui-v2-0
+    app.kubernetes.io/part-of: globex-app-user1
+    app.kubernetes.io/version: 1.0.0
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 8080
+    protocol: TCP
+    targetPort: http
+  selector:
+    app.kubernetes.io/name: globex-ui-v2-0
+    app.kubernetes.io/part-of: globex-app-user1
+
+---
+
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: globex-ui-v2-0
+  labels:
+    app.kubernetes.io/instance: globex-app-user1
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: globex-ui-v2-0
+    app.kubernetes.io/part-of: globex-app-user1
+    app.kubernetes.io/version: 1.0.0
+spec:
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: globex-ui-v2-0
+    weight: 100
+  wildcardPolicy: None
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
