@@ -46,14 +46,6 @@ spec:
           env: 
             - name: JSON_SCHEMA
               value: order-placement-payload_v1.1.json
-            - name: REGISTRY_URL
-              value: http://service-registry-service.globex-apim-user1.svc.cluster.local:8080/apis/registry/v2
-            - name: REGISTRY_GROUPID
-              value: globex
-            - name: REGISTRY_ARTIFACTID
-              value: OrderPlacementJsonSchemaAPI
-            - name: REGISTRY_ARTIFACTID_VERSION
-              value: "2"
           livenessProbe:
             httpGet:
               path: /q/health/live
