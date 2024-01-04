@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: globex-app-user1-globex-ui-2-0
+  name: globex-app-user1-globex-ui-v2-0
   namespace: globex-user1
   labels:
     app.kubernetes.io/instance: globex-app-user1
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: globex-ui-2-0
+    app.kubernetes.io/name: globex-ui-v2-0
     app.kubernetes.io/part-of: globex-app-user1
     app.kubernetes.io/version: 1.0.0
 
@@ -20,13 +20,13 @@ metadata:
       [{"apiVersion":"apps/v1","kind":"Deployment","name":"catalog"},
       {"apiVersion":"apps/v1","kind":"Deployment","name":"recommendation-engine"},
       {"apiVersion":"apps/v1","kind":"Deployment","name":"activity-tracking"},
-      {"apiVersion":"apps/v1","kind":"Deployment","name":"order-placement-2-0"}]
-  name: globex-ui-2-0
+      {"apiVersion":"apps/v1","kind":"Deployment","name":"order-placement-v2-0"}]
+  name: globex-ui-v2-0
   namespace: globex-user1
   labels:
     app.kubernetes.io/instance: globex-app-user1
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: globex-ui-2-0
+    app.kubernetes.io/name: globex-ui-v2-0
     app.kubernetes.io/part-of: globex-app-user1
     app.kubernetes.io/version: 1.0.0
     app.openshift.io/runtime: nodejs
@@ -64,11 +64,11 @@ spec:
             - name: API_CATALOG_RECOMMENDED_PRODUCT_IDS
               value: 'http://recommendation-engine:8080/score/product'
             - name: API_TRACK_PLACEORDER
-              value: 'http://order-placemen-2-0:8080/placeorder'
+              value: 'http://order-placement-v2-0:8080/placeorder'
           imagePullPolicy: IfNotPresent
       restartPolicy: Always
-      serviceAccountName: globex-app-user1-globex-ui-2-0
-      serviceAccount: globex-app-user1-globex-ui-2.0
+      serviceAccountName: globex-app-user1-globex-ui-v2-0
+      serviceAccount: globex-app-user1-globex-ui-v2-0
       securityContext: {}
 
 ---

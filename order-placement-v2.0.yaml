@@ -45,7 +45,7 @@ spec:
               protocol: TCP
           env: 
             - name: JSON_SCHEMA
-              value: order-placement-payload_v1.1.json
+              value: order-placement-payload_v2.0.json
           livenessProbe:
             httpGet:
               path: /q/health/live
